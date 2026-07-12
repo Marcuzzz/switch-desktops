@@ -1,0 +1,27 @@
+# Build output
+bin/
+obj/
+publish/
+AppPackages/
+BundleArtifacts/
+
+# IDE
+.vs/
+.idea/
+.vscode/
+*.user
+*.suo
+
+# Signing keys — never commit
+*.pfx
+*.snk
+
+# Generated placeholder assets (optional — comment out if you want them tracked)
+# SwitchDesktops/Assets/*.png
+
+# Deploy artifacts (published separately via CI to GitHub Pages/Releases)
+deploy/*.msix
+deploy/*.appx
+
+# macOS
+.DS_Store

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>SwitchDesktops — Install</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root { color-scheme: dark; }
+    body {
+      font-family: -apple-system, Segoe UI, Roboto, sans-serif;
+      background: #111; color: #eee;
+      max-width: 640px; margin: 4rem auto; padding: 0 1.5rem;
+      line-height: 1.55;
+    }
+    a.install {
+      display: inline-block; padding: 0.9rem 1.6rem;
+      background: linear-gradient(135deg, #5B8CF0, #F064A0);
+      color: white; text-decoration: none;
+      border-radius: 8px; font-weight: 600;
+      margin: 1rem 0;
+    }
+    code { background: #222; padding: 0.15rem 0.4rem; border-radius: 4px; }
+    h1 { margin-bottom: 0.2rem; }
+    .sub { color: #999; margin-top: 0; }
+  </style>
+</head>
+<body>
+  <h1>SwitchDesktops</h1>
+  <p class="sub">Virtual desktop switcher with crossfade transitions for Windows 10/11.</p>
+
+  <a class="install" href="SwitchDesktops.appinstaller">Install for Windows</a>
+
+  <h2>Requirements</h2>
+  <ul>
+    <li>Windows 10 build 19041+ or Windows 11 (x64)</li>
+    <li>You may need to trust the signing certificate on first install — see below.</li>
+  </ul>
+
+  <h2>First-time install</h2>
+  <p>If this is a self-signed build, download <a href="SwitchDesktops.cer">SwitchDesktops.cer</a>, right-click → <em>Install Certificate</em> → <em>Local Machine</em> → place in <em>Trusted People</em>. Then click <em>Install</em> above.</p>
+
+  <h2>Updates</h2>
+  <p>Once installed, the app checks this URL on every launch and auto-installs updates in the background.</p>
+</body>
+</html>
