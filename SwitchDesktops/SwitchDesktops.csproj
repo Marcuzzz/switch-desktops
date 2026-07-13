@@ -17,7 +17,7 @@
     <EnableMsixTooling>true</EnableMsixTooling>
     <WindowsPackageType Condition="'$(BuildingInsideVisualStudio)' == 'true' or '$(PackageMsix)' == 'true'">MSIX</WindowsPackageType>
     <GenerateAppInstallerFile>true</GenerateAppInstallerFile>
-    <AppInstallerUri>https://marcuzzz.github.io/switch-desktops/</AppInstallerUri>
+    <AppInstallerUri>https://marcotten.com/switch-desktops/</AppInstallerUri>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>

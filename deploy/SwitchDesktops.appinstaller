@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <AppInstaller
     xmlns="http://schemas.microsoft.com/appx/appinstaller/2018"
-    Uri="https://marcuzzz.github.io/switch-desktops/SwitchDesktops.appinstaller"
+    Uri="https://marcotten.com/switch-desktops/SwitchDesktops.appinstaller"
     Version="1.0.0.0">
 
   <MainPackage
@@ -9,7 +9,7 @@
       Publisher="CN=SwitchDesktopsDev"
       Version="1.0.0.0"
       ProcessorArchitecture="x64"
-      Uri="https://marcuzzz.github.io/switch-desktops/SwitchDesktops_1.0.0.0_x64.msix" />
+      Uri="https://marcotten.com/switch-desktops/SwitchDesktops_1.0.0.0_x64.msix" />
 
   <UpdateSettings>
     <OnLaunch HoursBetweenUpdateChecks="0" ShowPrompt="false" UpdateBlocksActivation="false" />
