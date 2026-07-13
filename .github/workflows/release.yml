@@ -65,19 +65,7 @@ jobs:
         env:
           PFX_PASSWORD: ${{ secrets.SIGNING_PFX_PASSWORD }}
         run: |
-          dotnet publish SwitchDesktops/SwitchDesktops.csproj `
-            -c Release `
-            -r win-x64 `
-            --self-contained false `
-            -p:PackageMsix=true `
-            -p:GenerateAppxPackageOnBuild=true `
-            -p:AppxPackageDir="$env:GITHUB_WORKSPACE\deploy\" `
-            -p:UapAppxPackageBuildMode=SideloadOnly `
-            -p:AppxBundle=Never `
-            -p:AppxPackageSigningEnabled=true `
-            -p:PackageCertificateKeyFile="$env:GITHUB_WORKSPACE\SwitchDesktops\SwitchDesktops_TemporaryKey.pfx" `
-            -p:PackageCertificatePassword="$env:PFX_PASSWORD" `
-            -p:Version=${{ steps.version.outputs.value }}
+          ./scripts/build-msix.ps1 -Version ${{ steps.version.outputs.value }} -PfxPassword $env:PFX_PASSWORD
 
       - name: Stamp .appinstaller version + URLs
         shell: pwsh

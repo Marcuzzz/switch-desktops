@@ -6,7 +6,7 @@ using SwitchDesktops.UI;
 
 namespace SwitchDesktops;
 
-public partial class App : Application
+public partial class App : System.Windows.Application
 {
     private DesktopManager _manager = null!;
     private WindowTracker _tracker = null!;
@@ -37,6 +37,7 @@ public partial class App : Application
         _hotkeys.Register(modCtrlAlt, VK_M, ShowMovePicker);
 
         _trayIcon = BuildTrayIcon();
+        _trayIcon.ForceCreate(false);
     }
 
     private void AssignExistingWindowsToActiveDesktop()
@@ -79,8 +80,10 @@ public partial class App : Application
 
     private TaskbarIcon BuildTrayIcon()
     {
+        var iconPath = System.IO.Path.Combine(AppContext.BaseDirectory, "Assets", "tray.ico");
         var icon = new TaskbarIcon
         {
+            Icon = new System.Drawing.Icon(iconPath),
             ToolTipText = TrayTooltip(),
             ContextMenu = BuildContextMenu()
         };

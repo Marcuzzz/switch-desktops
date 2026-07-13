@@ -91,6 +91,11 @@ The app is set up for **MSIX packaging with `.appinstaller` auto-updates**. User
 
 ### One-time setup (Windows only)
 
+0. **Install the Windows 10/11 SDK**, if you don't already have it (just the SDK — Visual Studio is *not* required, since `build-msix.ps1` drives `makeappx.exe`/`signtool.exe` directly instead of Visual Studio's single-project MSIX tooling):
+   ```powershell
+   winget install Microsoft.WindowsSDK.10.0.26100
+   ```
+
 1. **Create a self-signed certificate** (from an elevated PowerShell in the repo root):
    ```powershell
    pwsh ./scripts/create-self-signed-cert.ps1
@@ -101,7 +106,7 @@ The app is set up for **MSIX packaging with `.appinstaller` auto-updates**. User
    ```powershell
    pwsh ./scripts/generate-placeholder-assets.ps1
    ```
-   Replace the PNGs in `SwitchDesktops/Assets/` with real icons before shipping.
+   Replace the PNGs in `SwitchDesktops/Assets/` with real icons before shipping. (The tray icon itself is separate — see `scripts/generate-tray-icon.ps1` — and is already tracked in git so `dotnet run` shows a real tray icon with no setup.)
 
 3. **Set the base URL** in two places to match where you'll host it:
    - `deploy/SwitchDesktops.appinstaller` — replace `https://YOUR-USERNAME.github.io/switch-desktops/`
@@ -114,6 +119,8 @@ pwsh ./scripts/build-msix.ps1 -Version 1.0.0.0
 ```
 
 Output lands in `deploy/`: a signed `SwitchDesktops_1.0.0.0_x64.msix` plus the `.appinstaller` and `.cer`.
+
+To test-install it locally: `certutil -addstore -f "TrustedPeople" deploy\SwitchDesktops.cer`, then `Add-AppxPackage -Path deploy\SwitchDesktops_1.0.0.0_x64.msix`.
 
 ### Install locally for testing
 

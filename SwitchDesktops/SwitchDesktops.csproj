@@ -17,7 +17,7 @@
     <EnableMsixTooling>true</EnableMsixTooling>
     <WindowsPackageType Condition="'$(BuildingInsideVisualStudio)' == 'true' or '$(PackageMsix)' == 'true'">MSIX</WindowsPackageType>
     <GenerateAppInstallerFile>true</GenerateAppInstallerFile>
-    <AppInstallerUri>https://YOUR-USERNAME.github.io/switch-desktops/</AppInstallerUri>
+    <AppInstallerUri>https://marcuzzz.github.io/switch-desktops/</AppInstallerUri>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
@@ -43,6 +43,9 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <None Include="Assets\**\*.png" />
+    <Content Include="Assets\tray.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
