@@ -45,6 +45,8 @@ dotnet publish $project `
     -r win-x64 `
     --self-contained false `
     -p:Version=$Version
+if ($LASTEXITCODE -ne 0) { throw "dotnet publish failed with exit code $LASTEXITCODE" }
+if (-not (Test-Path $publishDir)) { throw "dotnet publish did not produce the expected output at $publishDir" }
 
 Write-Host "Assembling MSIX layout..."
 $layout = Join-Path $repo 'obj\msix-layout'
