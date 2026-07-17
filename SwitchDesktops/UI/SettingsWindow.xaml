@@ -1,0 +1,39 @@
+<Window x:Class="SwitchDesktops.UI.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Settings"
+        Height="460" Width="440"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="#1E1E1E"
+        Foreground="White">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Transition" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,8"/>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,16">
+            <RadioButton x:Name="CrossfadeRadio" Content="Crossfade" GroupName="Transition" Foreground="White" Margin="0,0,20,0"/>
+            <RadioButton x:Name="HardCutRadio" Content="Hard cut" GroupName="Transition" Foreground="White"/>
+        </StackPanel>
+
+        <TextBlock Grid.Row="2" Text="Shortcuts" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,4"/>
+        <TextBlock Grid.Row="3" Text="Click a box and press a key combination. Press Esc to clear." FontSize="11" Foreground="#AAAAAA" Margin="0,0,0,12"/>
+
+        <StackPanel x:Name="HotkeyPanel" Grid.Row="4" VerticalAlignment="Top"/>
+
+        <TextBlock x:Name="ErrorText" Grid.Row="5" Foreground="#FF6B6B" FontSize="11" TextWrapping="Wrap" Margin="0,8,0,0"/>
+
+        <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+            <Button x:Name="SaveButton" Content="Save" Padding="16,6" Click="OnSave"/>
+            <Button x:Name="CancelButton" Content="Cancel" Padding="16,6" Margin="8,0,0,0" Click="OnCancel"/>
+        </StackPanel>
+    </Grid>
+</Window>

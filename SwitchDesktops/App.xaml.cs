@@ -1,4 +1,5 @@
 using System.Windows;
+using System.Windows.Input;
 using H.NotifyIcon;
 using SwitchDesktops.Core;
 using SwitchDesktops.Services;
@@ -14,14 +15,11 @@ public partial class App : System.Windows.Application
     private DesktopSwitcher _switcher = null!;
     private HotkeyService _hotkeys = null!;
     private TaskbarIcon _trayIcon = null!;
-
-    private const uint VK_1 = 0x31;
-    private const uint VK_2 = 0x32;
-    private const uint VK_3 = 0x33;
-    private const uint VK_M = 0x4D;
+    private AppSettings _settings = null!;
 
     private void OnStartup(object sender, StartupEventArgs e)
     {
+        _settings = SettingsService.Load();
         _manager = new DesktopManager(initialCount: 3);
         _tracker = new WindowTracker();
         _capture = new ScreenCapture();
@@ -30,14 +28,31 @@ public partial class App : System.Windows.Application
 
         AssignExistingWindowsToActiveDesktop();
 
-        var modCtrlAlt = Interop.NativeMethods.MOD_CONTROL | Interop.NativeMethods.MOD_ALT;
-        _hotkeys.Register(modCtrlAlt, VK_1, () => _ = SwitchTo(1));
-        _hotkeys.Register(modCtrlAlt, VK_2, () => _ = SwitchTo(2));
-        _hotkeys.Register(modCtrlAlt, VK_3, () => _ = SwitchTo(3));
-        _hotkeys.Register(modCtrlAlt, VK_M, ShowMovePicker);
+        RegisterHotkeys();
 
         _trayIcon = BuildTrayIcon();
         _trayIcon.ForceCreate(false);
+    }
+
+    private void RegisterHotkeys()
+    {
+        _hotkeys.Clear();
+
+        foreach (var d in _manager.Desktops)
+        {
+            if (!_settings.DesktopHotkeys.TryGetValue(d.Id, out var binding) || !binding.IsValid)
+                continue;
+
+            var id = d.Id;
+            _hotkeys.Register((uint)binding.Modifiers, (uint)KeyInterop.VirtualKeyFromKey(binding.Key),
+                () => _ = SwitchTo(id));
+        }
+
+        if (_settings.MoveWindowHotkey.IsValid)
+        {
+            _hotkeys.Register((uint)_settings.MoveWindowHotkey.Modifiers,
+                (uint)KeyInterop.VirtualKeyFromKey(_settings.MoveWindowHotkey.Key), ShowMovePicker);
+        }
     }
 
     private void AssignExistingWindowsToActiveDesktop()
@@ -54,7 +69,7 @@ public partial class App : System.Windows.Application
         var current = _manager.Active;
         AbsorbNewWindows(current);
 
-        await _switcher.SwitchAsync(current, target);
+        await _switcher.SwitchAsync(current, target, _settings.Transition == TransitionMode.HardCut);
         _manager.SetActive(target);
         UpdateTrayTooltip();
     }
@@ -102,14 +117,35 @@ public partial class App : System.Windows.Application
         }
         menu.Items.Add(new System.Windows.Controls.Separator());
 
-        var moveItem = new System.Windows.Controls.MenuItem { Header = "Move window… (Ctrl+Alt+M)" };
+        var moveItem = new System.Windows.Controls.MenuItem
+        {
+            Header = $"Move window… ({_settings.MoveWindowHotkey})"
+        };
         moveItem.Click += (_, _) => ShowMovePicker();
         menu.Items.Add(moveItem);
+
+        var settingsItem = new System.Windows.Controls.MenuItem { Header = "Settings…" };
+        settingsItem.Click += (_, _) => ShowSettings();
+        menu.Items.Add(settingsItem);
+
+        menu.Items.Add(new System.Windows.Controls.Separator());
 
         var exitItem = new System.Windows.Controls.MenuItem { Header = "Exit" };
         exitItem.Click += (_, _) => Shutdown();
         menu.Items.Add(exitItem);
         return menu;
+    }
+
+    private void ShowSettings()
+    {
+        var window = new SettingsWindow(_settings, _manager);
+        if (window.ShowDialog() == true)
+        {
+            _settings = window.Settings;
+            SettingsService.Save(_settings);
+            RegisterHotkeys();
+            _trayIcon.ContextMenu = BuildContextMenu();
+        }
     }
 
     private string TrayTooltip() => $"SwitchDesktops — {_manager.Active.Name}";

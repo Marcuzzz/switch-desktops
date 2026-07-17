@@ -34,6 +34,13 @@ public sealed class HotkeyService : IDisposable
         return true;
     }
 
+    public void Clear()
+    {
+        foreach (var id in _handlers.Keys)
+            NativeMethods.UnregisterHotKey(_source.Handle, id);
+        _handlers.Clear();
+    }
+
     private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
     {
         if (msg == NativeMethods.WM_HOTKEY

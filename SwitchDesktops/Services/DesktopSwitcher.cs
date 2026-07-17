@@ -14,9 +14,17 @@ public sealed class DesktopSwitcher
         _capture = capture;
     }
 
-    public async Task SwitchAsync(Desktop from, Desktop to)
+    public async Task SwitchAsync(Desktop from, Desktop to, bool hardCut = false)
     {
         from.LastFocusedHandle = NativeMethods.GetForegroundWindow();
+
+        if (hardCut)
+        {
+            HideAll(from);
+            ShowAll(to);
+            RestoreFocus(to);
+            return;
+        }
 
         var fromBitmap = _capture.CapturePrimaryScreen();
 
