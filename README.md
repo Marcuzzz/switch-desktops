@@ -91,10 +91,20 @@ The app is set up for **MSIX packaging with `.appinstaller` auto-updates**. User
 
 ### One-time setup (Windows only)
 
-0. **Install the Windows 10/11 SDK**, if you don't already have it (just the SDK — Visual Studio is *not* required, since `build-msix.ps1` drives `makeappx.exe`/`signtool.exe` directly instead of Visual Studio's single-project MSIX tooling):
+0. **Install the Windows 10/11 SDK.** This is required before you can sign the MSIX or build the package — `build-msix.ps1` needs `makeappx.exe` and `signtool.exe`, which only ship with the SDK. Just the SDK is needed; Visual Studio is *not* required, since `build-msix.ps1` drives those tools directly instead of Visual Studio's single-project MSIX tooling.
+
+   **Option A — winget (recommended):**
    ```powershell
    winget install Microsoft.WindowsSDK.10.0.26100
    ```
+
+   **Option B — manual download**, if winget isn't available or that package ID has changed: go to https://developer.microsoft.com/windows/downloads/windows-sdk/, download the standalone installer, run it, and when prompted for features you only need **"Windows SDK Signing Tools for Desktop Apps"** and **"MSIX Packaging Tool"** (uncheck the rest to keep it quick).
+
+   **Verify it installed correctly** — the scripts auto-discover the SDK under `C:\Program Files (x86)\Windows Kits\10\bin`, so no PATH changes are needed, but you can sanity-check with:
+   ```powershell
+   Get-ChildItem 'C:\Program Files (x86)\Windows Kits\10\bin' -Directory -Filter '10.0.*'
+   ```
+   You should see at least one version folder (e.g. `10.0.26100.0`) containing an `x64\makeappx.exe` and `x64\signtool.exe`. If nothing shows up, the SDK either didn't install or installed to a nonstandard location — rerun the installer and make sure "Windows SDK Signing Tools for Desktop Apps" is checked.
 
 1. **Create a self-signed certificate** (from an elevated PowerShell in the repo root):
    ```powershell
